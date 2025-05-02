@@ -2,19 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo '🔨 Building the app...'
+                checkout scm
             }
         }
-        stage('Test') {
+        stage('Build Docker Image') {
             steps {
-                echo '🧪 Running tests...'
+                echo '🔨 Building Docker image...'
+                sh 'docker build -t zaheer-docker-app .'
             }
         }
-        stage('Deploy') {
+        stage('Run Docker Container') {
             steps {
-                echo '🚀 Deploying the app...'
+                echo '🚀 Running Docker container...'
+                sh 'docker run --rm zaheer-docker-app'
             }
         }
     }
