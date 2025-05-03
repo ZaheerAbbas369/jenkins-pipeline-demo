@@ -4,32 +4,15 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building the project...'
-                sh 'docker build -t jenkins-pipeline-demo .'
+                // Example shell command to run Maven build
+                sh 'mvn clean install'
             }
         }
-
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                sh './run-tests.sh'
+                // Example shell command to run tests
+                sh 'mvn test'
             }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the project...'
-                sh './deploy.sh'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline ran successfully!'
-        }
-        failure {
-            echo 'Pipeline failed! Please check the logs.'
         }
     }
 }
