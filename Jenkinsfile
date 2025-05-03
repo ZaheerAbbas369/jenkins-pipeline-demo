@@ -2,22 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout scm
+                echo 'Building the project...'
+                sh 'docker build -t jenkins-pipeline-demo .'
             }
         }
-        stage('Build Docker Image') {
+
+        stage('Test') {
             steps {
-                echo '🔨 Building Docker image...'
-                sh 'docker build -t zaheer-docker-app .'
+                echo 'Running tests...'
+                sh './run-tests.sh'
             }
         }
-        stage('Run Docker Container') {
+
+        stage('Deploy') {
             steps {
-                echo '🚀 Running Docker container...'
-                sh 'docker run --rm zaheer-docker-app'
+                echo 'Deploying the project...'
+                sh './deploy.sh'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline ran successfully!'
+        }
+        failure {
+            echo 'Pipeline failed! Please check the logs.'
         }
     }
 }
